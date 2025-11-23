@@ -25,7 +25,6 @@ const (
 
 	// CloudEventsNamespace is the namespace used for the cloud events consumer and associated resources.
 	CloudEventsNamespace = "cloud-events"
-	// LeapFileNamespace is the namespace used for the leap test.
 )
 
 // These parameters are for the PTP event consumer deployment.
