@@ -25,6 +25,8 @@ const (
 	LabelStability = "stability"
 	// LabelLogReduction is the label for all tests in the PTP log reduction suite.
 	LabelLogReduction = "log-reduction"
+	// LabelTestingConsumerEvents is the label for all tests in the PTP consumer events suite.
+	LabelTestingConsumerEvents = "testing-consumer-events"
 
 	// LeapConfigmapName is the name of the leap configmap.
 	LeapConfigmapName = "leap-configmap"

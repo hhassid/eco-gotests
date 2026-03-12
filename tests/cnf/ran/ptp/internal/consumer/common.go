@@ -115,10 +115,16 @@ func deleteConsumerNamespace(client *clients.Settings) error {
 	return consumerNamespace.DeleteAndWait(5 * time.Minute)
 }
 
+// getShortNodeName returns the first label of the node name (e.g. "helix59" from "helix59.lab.eng.rdu2.redhat.com").
+// The publisher expects this short name in subscription resource paths; using the full FQDN causes 400 Bad Request.
+func getShortNodeName(nodeName string) string {
+	return strings.Split(nodeName, ".")[0]
+}
+
 // getConsumerDeploymentName returns the name of the cloud-event-consumer deployment for a specific node. Similar to how
 // the container uses NODE_NAME, it splits the node name by the dot and takes the first part.
 func getConsumerDeploymentName(nodeName string) string {
-	return fmt.Sprintf("cloud-event-consumer-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("cloud-event-consumer-%s", getShortNodeName(nodeName))
 }
 
 // getConsumerSelectorLabels returns the labels used to select the cloud-event-consumer deployment for a specific node.
@@ -134,11 +140,11 @@ func getConsumerSelectorLabels(nodeName string) map[string]string {
 // getConsumerServiceName returns the name of the cloud-event-consumer service for a specific node. Similar to how
 // the container uses NODE_NAME, it splits the node name by the dot and takes the first part.
 func getConsumerServiceName(nodeName string) string {
-	return fmt.Sprintf("consumer-events-service-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("consumer-events-service-%s", getShortNodeName(nodeName))
 }
 
 func getConsumerServingCertsSecretName(nodeName string) string {
-	return fmt.Sprintf("consumer-events-serving-certs-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("consumer-events-serving-certs-%s", getShortNodeName(nodeName))
 }
 
 func getConsumerServicesAnnotations(nodeName string) map[string]string {
@@ -149,19 +155,19 @@ func getConsumerServicesAnnotations(nodeName string) map[string]string {
 }
 
 func getSidecarServiceMonitorName(nodeName string) string {
-	return fmt.Sprintf("consumer-sidecar-service-monitor-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("consumer-sidecar-service-monitor-%s", getShortNodeName(nodeName))
 }
 
 // getConsumerEventsSubscriptionServiceName returns the name of the consumer-events-subscription-service for a specific
 // node. Similar to how the container uses NODE_NAME, it splits the node name by the dot and takes the first part.
 func getConsumerEventsSubscriptionServiceName(nodeName string) string {
-	return fmt.Sprintf("consumer-events-subscription-service-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("consumer-events-subscription-service-%s", getShortNodeName(nodeName))
 }
 
 // getConsumerSidecarServiceName returns the name of the consumer-sidecar-service for a specific node. Similar to how
 // the container uses NODE_NAME, it splits the node name by the dot and takes the first part.
 func getConsumerSidecarServiceName(nodeName string) string {
-	return fmt.Sprintf("consumer-sidecar-service-%s", strings.Split(nodeName, ".")[0])
+	return fmt.Sprintf("consumer-sidecar-service-%s", getShortNodeName(nodeName))
 }
 
 // listPtpDaemonNodes lists the nodes that the PTP daemon is deployed on. It uses the PtpOperatorConfig

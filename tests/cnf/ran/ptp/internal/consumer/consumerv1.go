@@ -648,7 +648,7 @@ func defineConsumerContainer(nodeName string) (*corev1.Container, error) {
 	container, err := pod.NewContainerBuilder(
 		"cloud-event-consumer", v1ConsumerImage, []string{"./cloud-event-consumer"}).
 		WithImagePullPolicy(corev1.PullAlways).
-		WithEnvVar("NODE_NAME", nodeName).
+		WithEnvVar("NODE_NAME", getShortNodeName(nodeName)).
 		WithEnvVar("CONSUMER_TYPE", "PTP").
 		WithEnvVar("ENABLE_STATUS_CHECK", "true").
 		GetContainerCfg()
@@ -673,7 +673,7 @@ func defineSidecarContainer(nodeName string, cloudEventProxyImage string) (*core
 	container, err := pod.NewContainerBuilder(
 		"cloud-event-sidecar", cloudEventProxyImage, []string{"./cloud-event-sidecar"}).
 		WithImagePullPolicy(corev1.PullAlways).
-		WithEnvVar("NODE_NAME", nodeName).
+		WithEnvVar("NODE_NAME", getShortNodeName(nodeName)).
 		WithPorts([]corev1.ContainerPort{{
 			Name:          "metrics-port",
 			ContainerPort: 9091,
@@ -693,7 +693,7 @@ func defineSidecarContainer(nodeName string, cloudEventProxyImage string) (*core
 		"--metrics-addr=127.0.0.1:9091",
 		"--store-path=/store",
 		transportHost,
-		"--http-event-publishers=ptp-event-publisher-service-NODE_NAME.openshift-ptp.svc.cluster.local:9043",
+		"--http-event-publishers=ptp-event-publisher-service-NODE_NAME.openshift-ptp.svc.cluster.local.:9043",
 		"--api-port=8089",
 	}
 	container.SecurityContext = nil

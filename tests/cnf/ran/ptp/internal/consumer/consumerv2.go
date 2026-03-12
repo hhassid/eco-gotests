@@ -103,7 +103,7 @@ func createV2ConsumerDeploymentOnNode(client *clients.Settings, nodeName string)
 		WithImagePullPolicy(corev1.PullAlways).
 		WithEnvVar("CONSUMER_TYPE", "PTP").
 		WithEnvVar("ENABLE_STATUS_CHECK", "true").
-		WithEnvVar("NODE_NAME", nodeName).
+		WithEnvVar("NODE_NAME", getShortNodeName(nodeName)).
 		GetContainerCfg()
 	if err != nil {
 		return fmt.Errorf("failed to create consumer container: %w", err)
