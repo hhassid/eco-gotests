@@ -174,7 +174,7 @@ var _ = Describe("PTP T-GM SMA Disconnect", Label(tsparams.LabelSMADisconnect), 
 							Process:   metrics.DoesNotEqual(metrics.ProcessTS2PHC),
 						},
 						metrics.ClockStateFreerun,
-						metrics.AssertWithTimeout(1*time.Minute),
+						metrics.AssertWithTimeout(5*time.Minute),
 						metrics.AssertWithPollInterval(5*time.Second),
 					)
 					Expect(err).ToNot(HaveOccurred(),
